@@ -1,16 +1,18 @@
-# Transfer Learning: Classificacao de Gatos e Cachorros
+# Transfer learning com gatos e cachorros
 
-Projeto desenvolvido para o desafio da DIO sobre **Transfer Learning com Deep Learning**, utilizando Python, TensorFlow e Keras no Google Colab.
+Projeto de classificação de imagens desenvolvido para o desafio da DIO, usando **transfer learning** com MobileNetV2, TensorFlow e o dataset `cats_vs_dogs`.
 
-A proposta e construir um classificador de imagens capaz de diferenciar gatos e cachorros a partir do dataset `cats_vs_dogs`, reaproveitando uma rede neural ja treinada em um grande conjunto de imagens. Em vez de treinar uma CNN profunda do zero, o projeto usa a MobileNetV2 como extratora de caracteristicas e adiciona uma pequena cabeca de classificacao para adaptar o modelo ao problema.
+A ideia aqui foi construir um notebook simples de acompanhar, mas completo o suficiente para mostrar o fluxo real de um projeto de visão computacional: carregar os dados, preparar as imagens, reaproveitar um modelo pré-treinado, treinar a camada final e avaliar os resultados.
 
-## Objetivo
+## objetivo
 
-Criar um pipeline completo, organizado e didatico para classificacao binaria de imagens, cobrindo desde o carregamento do dataset ate a avaliacao final do modelo.
+Classificar imagens de gatos e cachorros usando uma rede neural pré-treinada.
 
-O projeto foi pensado para ser executado no Google Colab, mas tambem pode ser adaptado para um ambiente local com Python configurado corretamente.
+Em vez de treinar uma CNN do zero, o projeto usa a MobileNetV2 como base para extração de características. A partir dela, foi adicionada uma cabeça de classificação para adaptar o modelo ao problema binário.
 
-## Tecnologias utilizadas
+O notebook foi montado para rodar bem no Google Colab, mas também pode ser executado localmente com Python e Jupyter.
+
+## tecnologias
 
 - Python
 - TensorFlow
@@ -18,60 +20,26 @@ O projeto foi pensado para ser executado no Google Colab, mas tambem pode ser ad
 - TensorFlow Datasets
 - NumPy
 - Matplotlib
+- Jupyter Notebook
 - Google Colab
 
-## Conceitos aplicados
+## transfer learning
 
-- Transfer Learning
-- Deep Learning
-- Redes neurais convolucionais
-- MobileNetV2
-- Classificacao binaria de imagens
-- Pre-processamento de imagens
-- Normalizacao
-- Resize de imagens
-- Data augmentation
-- Congelamento de camadas
-- Treinamento supervisionado
-- Avaliacao com metricas de acuracia e loss
+Transfer learning é uma forma de reaproveitar o que um modelo já aprendeu em uma tarefa maior e aplicar esse conhecimento em outro problema.
 
-## O que e Transfer Learning?
+Neste projeto, a MobileNetV2 entra com pesos pré-treinados na ImageNet. Isso significa que ela já aprendeu padrões visuais úteis, como bordas, texturas, formas e combinações mais complexas de objetos.
 
-Transfer Learning e uma tecnica em que aproveitamos o conhecimento aprendido por um modelo em uma tarefa anterior e o reutilizamos em uma nova tarefa relacionada.
+Para o problema de gatos e cachorros, esse reaproveitamento faz sentido porque o modelo não começa do zero. Ele já sabe extrair boas características das imagens, e o treinamento fica concentrado em ajustar a parte final para separar as duas classes.
 
-No contexto de imagens, redes como MobileNetV2, ResNet e EfficientNet ja foram treinadas em bases enormes, como a ImageNet, e aprenderam a identificar padroes visuais genericos: bordas, texturas, formas, partes de objetos e composicoes mais complexas.
+## dataset
 
-Para um problema como gatos versus cachorros, esse conhecimento e muito util. O modelo base ja entende varios elementos visuais importantes, entao precisamos treinar apenas uma parte menor da arquitetura para especializar a rede no nosso conjunto de dados.
+O dataset usado foi o `cats_vs_dogs`, disponível pelo `tensorflow_datasets`.
 
-Essa abordagem costuma trazer tres vantagens importantes:
+Ele contém imagens reais de gatos e cachorros em diferentes poses, tamanhos, iluminações e cenários. Essa variação torna o conjunto interessante para testar um modelo de classificação de imagens de forma um pouco mais próxima de um caso real.
 
-- reduz o tempo de treinamento;
-- exige menos dados do que treinar uma rede profunda do zero;
-- geralmente melhora a qualidade do modelo em projetos de classificacao de imagens.
+No notebook, os dados são divididos em treino, validação e teste. Antes do treinamento, as imagens passam por redimensionamento, normalização e data augmentation.
 
-## Por que MobileNetV2?
-
-A MobileNetV2 e uma arquitetura de rede neural convolucional criada para ser leve, eficiente e adequada para cenarios com restricao de recursos.
-
-Ela foi escolhida neste projeto porque oferece um bom equilibrio entre desempenho e custo computacional. Isso faz bastante sentido para um notebook educacional em Google Colab, onde queremos um modelo forte, mas sem tornar o treinamento pesado demais.
-
-Neste projeto, a MobileNetV2 e utilizada com pesos pre-treinados na ImageNet. A parte convolucional da rede fica congelada durante o treinamento inicial, funcionando como extratora de caracteristicas. Em seguida, uma cabeca de classificacao e adicionada para prever se a imagem representa um gato ou um cachorro.
-
-## Dataset
-
-O projeto utiliza o dataset `cats_vs_dogs`, disponivel pelo `tensorflow_datasets`.
-
-Esse conjunto contem imagens reais de gatos e cachorros em diferentes poses, iluminacoes, tamanhos e contextos. Por isso, ele e um bom exemplo para praticar classificacao de imagens com redes neurais convolucionais.
-
-Durante o notebook, o dataset e dividido em:
-
-- treino;
-- validacao;
-- teste.
-
-As imagens passam por resize, normalizacao e data augmentation antes de serem usadas no treinamento.
-
-## Estrutura do projeto
+## estrutura
 
 ```text
 transfer-learning-cats-vs-dogs-dio/
@@ -80,79 +48,80 @@ transfer-learning-cats-vs-dogs-dio/
 ├── transfer_learning_cats_vs_dogs.ipynb
 ├── .gitignore
 └── images/
-    └── .gitkeep
+    ├── accuracy_loss.png
+    ├── final_accuracy.png
+    └── predictions.png
 ```
 
-## Etapas do desenvolvimento
+## etapas
 
-1. Preparacao do ambiente no Google Colab.
-2. Importacao das bibliotecas necessarias.
-3. Carregamento do dataset `cats_vs_dogs` com TensorFlow Datasets.
-4. Divisao dos dados em treino, validacao e teste.
-5. Pre-processamento das imagens.
-6. Aplicacao de resize e normalizacao.
-7. Criacao de uma camada de data augmentation.
-8. Visualizacao de amostras do dataset.
-9. Carregamento da MobileNetV2 com pesos da ImageNet.
-10. Congelamento do modelo base.
-11. Criacao da cabeca de classificacao.
-12. Compilacao do modelo.
-13. Treinamento.
-14. Avaliacao final.
-15. Visualizacao dos graficos de acuracia e loss.
-16. Predicao em imagens de exemplo.
+1. Preparação do ambiente no Google Colab.
+2. Importação das bibliotecas.
+3. Carregamento do `cats_vs_dogs` com TensorFlow Datasets.
+4. Separação dos dados em treino, validação e teste.
+5. Redimensionamento e normalização das imagens.
+6. Aplicação de data augmentation.
+7. Visualização de amostras do dataset.
+8. Carregamento da MobileNetV2 com pesos da ImageNet.
+9. Congelamento da base convolucional.
+10. Criação da cabeça de classificação.
+11. Compilação e treinamento do modelo.
+12. Avaliação no conjunto de teste.
+13. Visualização das curvas de acurácia e loss.
+14. Teste com predições em imagens de exemplo.
 
-## Resultados obtidos
+## resultados
 
-Os resultados podem variar conforme o ambiente de execucao, a GPU disponivel e a quantidade de epocas usada no treinamento.
+O modelo teve um bom desempenho para a tarefa proposta. A MobileNetV2 conseguiu extrair características visuais fortes, e a camada final aprendeu a separar as classes com boa precisão.
 
-Mesmo com poucas epocas, o uso de Transfer Learning costuma gerar uma acuracia de validacao bastante competitiva para o problema de gatos e cachorros. Isso acontece porque a MobileNetV2 ja aprendeu representacoes visuais poderosas durante o treinamento na ImageNet.
+Resultados aproximados no conjunto de teste:
 
-O notebook inclui graficos de acuracia e loss para acompanhar a evolucao do treinamento e identificar sinais de overfitting ou underfitting.
+- acurácia: **98,15%**
+- loss: **0,0476**
 
-## Como executar
+### acurácia e loss
 
-1. Abra o arquivo `transfer_learning_cats_vs_dogs.ipynb` no Google Colab.
-2. Selecione um ambiente com GPU em `Ambiente de execucao > Alterar tipo de ambiente de execucao`.
-3. Execute as celulas em ordem.
-4. Acompanhe os graficos e a avaliacao final do modelo.
+![Gráfico de acurácia e loss](images/accuracy_loss.png)
 
-Para executar localmente, instale as dependencias:
+### acurácia final
+
+![Acurácia final do modelo](images/final_accuracy.png)
+
+### exemplos de predição
+
+![Predições do modelo](images/predictions.png)
+
+## como executar
+
+Abra o notebook `transfer_learning_cats_vs_dogs.ipynb` no Google Colab e execute as células em ordem.
+
+Para melhor desempenho, use GPU:
+
+```text
+Ambiente de execução > Alterar tipo de ambiente de execução > GPU
+```
+
+Para rodar localmente, instale as dependências:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Depois, abra o notebook em um ambiente Jupyter.
+Depois disso, abra o notebook em um ambiente Jupyter.
 
-## Conclusao
+## conclusão
 
-Este projeto mostra como aplicar Transfer Learning de forma pratica e organizada em um problema classico de classificacao de imagens.
+Este projeto mostra como transfer learning pode acelerar bastante o desenvolvimento de um classificador de imagens.
 
-A combinacao de TensorFlow, Keras, TensorFlow Datasets e MobileNetV2 permite construir um modelo eficiente sem precisar treinar uma arquitetura profunda do zero. Alem disso, o notebook foi estruturado para facilitar o entendimento de cada etapa, servindo tanto como entrega para o desafio quanto como material de portfolio.
+Com a MobileNetV2 pré-treinada, foi possível chegar a uma boa acurácia sem precisar treinar uma rede profunda do zero. O resultado é um notebook direto, reproduzível e útil tanto como entrega para a DIO quanto como projeto de portfólio.
 
-## Melhorias futuras
+## melhorias futuras
 
-- Aplicar fine-tuning nas camadas finais da MobileNetV2.
-- Comparar a MobileNetV2 com outras arquiteturas, como EfficientNet ou ResNet.
-- Adicionar matriz de confusao e relatorio de classificacao.
-- Salvar o modelo treinado em formato `.keras` ou `SavedModel`.
+- Fazer fine-tuning nas últimas camadas da MobileNetV2.
+- Comparar o resultado com arquiteturas como EfficientNet e ResNet.
+- Adicionar matriz de confusão.
+- Incluir relatório de classificação com precision, recall e F1-score.
+- Salvar o modelo treinado em `.keras` ou `SavedModel`.
 - Criar uma interface simples com Streamlit ou Gradio.
-- Testar imagens externas enviadas pelo usuario.
+- Testar imagens externas enviadas pelo usuário.
 - Automatizar experimentos com diferentes taxas de aprendizado e tamanhos de batch.
-
-## Sugestoes de commits semanticos
-
-```bash
-git add .
-git commit -m "chore: create project structure"
-
-git add README.md
-git commit -m "docs: add project documentation"
-
-git add transfer_learning_cats_vs_dogs.ipynb
-git commit -m "feat: add transfer learning notebook"
-
-git add requirements.txt .gitignore images/.gitkeep
-git commit -m "chore: add dependencies and repository config"
-```
